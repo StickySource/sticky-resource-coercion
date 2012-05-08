@@ -8,20 +8,20 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>net.stickycode</groupId>
-	<artifactId>sticky-coercion-resource</artifactId>
-	<version>1.4-SNAPSHOT</version>
+	<groupId>net.stickycode.resource</groupId>
+	<artifactId>sticky-resource-coercion</artifactId>
+	<version>2.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>sticky-coercion-resource</name>
+	<name>sticky-resource-coercion</name>
 	<description>Resource support for coercion</description>
 	<inceptionYear>2012</inceptionYear>
 	<url>http://www.StickyCode.net/sticky-coercion-resource/</url>
 
 	<scm>
-		<connection>scm:svn:http://stickycode.googlecode.com/svn/trunk/net.stickycode/sticky-coercion-resource</connection>
-		<developerConnection>scm:svn:https://stickycode.googlecode.com/svn/trunk/net.stickycode/sticky-coercion-resource</developerConnection>
-		<url>http://code.google.com/p/stickycode/source/browse/#svn/trunk/net.stickycode/sticky-coercion-resource</url>
+		<connection>scm:svn:http://stickycode.googlecode.com/svn/trunk/net.stickycode.resource/sticky-resource-coercion</connection>
+		<developerConnection>scm:svn:https://stickycode.googlecode.com/svn/trunk/net.stickycode.resource/sticky-resource-coercion</developerConnection>
+		<url>http://code.google.com/p/stickycode/source/browse/#svn/trunk/net.stickycode.resource/sticky-resource-coercion</url>
 	</scm>
 
 	<dependencies>
@@ -31,12 +31,7 @@
 			<version>[4.8,5)</version>
 		</dependency>
 		<dependency>
-			<groupId>net.stickycode</groupId>
-			<artifactId>sticky-stereotype</artifactId>
-			<version>[1.16,2)</version>
-		</dependency>
-		<dependency>
-			<groupId>net.stickycode</groupId>
+			<groupId>net.stickycode.resource</groupId>
 			<artifactId>sticky-resource</artifactId>
 			<version>[2,3)</version>
 		</dependency>
