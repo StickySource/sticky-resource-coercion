@@ -14,7 +14,6 @@ import net.stickycode.mockwire.MockwireConfigured;
 import net.stickycode.mockwire.MockwireContainment;
 import net.stickycode.mockwire.junit4.MockwireRunner;
 import net.stickycode.reflector.Fields;
-import net.stickycode.stereotype.resource.Resource;
 
 import org.fest.assertions.MapAssert;
 import org.junit.Test;
@@ -32,10 +31,13 @@ public class ResourceCoercionComponentTest {
       private String value;
   }
 
+  @SuppressWarnings("unused")
   private String stringResource;
 
+  @SuppressWarnings("unused")
   private Properties propertiesResource;
 
+  @SuppressWarnings("unused")
   private Bean bean;
 
   @Inject

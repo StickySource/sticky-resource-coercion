@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 @MockwireConfigured({})
 public class ResourceCoercionTest {
 
+  @SuppressWarnings("unused")
   private String blah;
 
   @Inject
