@@ -42,7 +42,7 @@ public class UriResourceLocation
   public InputStream getInputStream() {
     return protocol.getInputStream(this);
   }
-  
+
   @Override
   public OutputStream getOutputStream() {
     return protocol.getOutputStream(this);
@@ -50,10 +50,11 @@ public class UriResourceLocation
 
   @Override
   public String getPath() {
-    if (uri.getPath().length() == 0)
-      return uri.getHost();
+    String schemeSpecificPart = uri.getSchemeSpecificPart();
+    if (schemeSpecificPart.length() < 2)
+      throw new IllegalStateException("Expected a specific schema part but got nothing useful from " + uri);
 
-    return uri.getPath();
+    return schemeSpecificPart.substring(2);
   }
 
 }

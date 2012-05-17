@@ -63,8 +63,7 @@ public class ResourceCoercion
   @Override
   public Object getDefaultValue(CoercionTarget type) {
     ResourceCodec<?> codec = codecs.find(type);
-    URI uri = uri(type.getName() + ".xml"); 
-    // need to figure out when and what file extensions should be
+    URI uri = uri(type.getName() + codec.getDefaultFileSuffix()); 
     ResourceProtocol protocol = protocols.find(uri.getScheme());
     ResourceLocation location = new UriResourceLocation(type, protocol, uri);
     return new SingletonResource<Object>(codec, location).get();
