@@ -6,7 +6,7 @@ import net.stickycode.coercion.AbstractNoDefaultCoercion;
 import net.stickycode.coercion.CoercionTarget;
 import net.stickycode.resource.ResourceCodec;
 import net.stickycode.resource.ResourceCodecRegistry;
-import net.stickycode.stereotype.component.StickyExtension;
+import net.stickycode.stereotype.plugin.StickyExtension;
 
 @StickyExtension
 public class ResourceCodecCoecion<T>

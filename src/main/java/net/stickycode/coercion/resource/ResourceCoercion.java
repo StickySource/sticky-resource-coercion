@@ -1,26 +1,22 @@
 package net.stickycode.coercion.resource;
 
-import java.net.URI;
-
-import java.net.URISyntaxException;
-
 import javax.inject.Inject;
 
 import net.stickycode.coercion.AbstractNoDefaultCoercion;
 import net.stickycode.coercion.CoercionTarget;
-import net.stickycode.resource.ResourceCodec;
-import net.stickycode.resource.ResourceCodecNotFoundException;
 import net.stickycode.resource.ResourceCodecRegistry;
-import net.stickycode.resource.ResourceLocation;
-import net.stickycode.resource.ResourceProtocol;
 import net.stickycode.resource.ResourceProtocolRegistry;
-import net.stickycode.resource.SingletonResource;
-import net.stickycode.stereotype.component.StickyExtension;
+import net.stickycode.stereotype.plugin.StickyExtension;
+import net.stickycode.stereotype.resource.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @StickyExtension
 public class ResourceCoercion
     extends AbstractNoDefaultCoercion<Object> {
+
+  private Logger log = LoggerFactory.getLogger(getClass());
 
   @Inject
   ResourceProtocolRegistry protocols;
@@ -30,45 +26,22 @@ public class ResourceCoercion
 
   @Override
   public Object coerce(CoercionTarget type, String value) {
-    URI uri = uri(value);
-    ResourceProtocol protocol = protocols.find(uri.getScheme());
-    ResourceLocation location = new UriResourceLocation(type, protocol, uri);
-    ResourceCodec<?> codec = codecs.find(type);
-    return new SingletonResource<Object>(codec, location).get();
-  }
-
-  private URI uri(String value) {
-    try {
-      if (value.contains("://"))
-        return new URI(value);
-      else
-        return new URI("classpath://" + value);
-    }
-    catch (URISyntaxException e) {
-      throw new RuntimeException(e);
-    }
+    log.debug("creating resource {} of {}", value, type);
+    return new StickyResource(type);
   }
 
   @Override
   public boolean isApplicableTo(CoercionTarget type) {
-    try {
-      codecs.find(type);
-      return true;
-    }
-    catch (ResourceCodecNotFoundException e) {
-      return false;
-    }
+    boolean assignableFrom = Resource.class.isAssignableFrom(type.getType());
+    System.out.println(assignableFrom);
+    return assignableFrom;
   }
-  
+
   @Override
   public Object getDefaultValue(CoercionTarget type) {
-    ResourceCodec<?> codec = codecs.find(type);
-    URI uri = uri(type.getName() + codec.getDefaultFileSuffix()); 
-    ResourceProtocol protocol = protocols.find(uri.getScheme());
-    ResourceLocation location = new UriResourceLocation(type, protocol, uri);
-    return new SingletonResource<Object>(codec, location).get();
+    return new StickyResource(type);
   }
-  
+
   @Override
   public boolean hasDefaultValue() {
     return true;
