@@ -41,6 +41,7 @@ public class ResourceCoercionComponentTest {
   @SuppressWarnings("unused")
   private Bean bean;
   
+  @SuppressWarnings("unused")
   private Resource<Bean> resourceBean;
 
   @Inject
@@ -66,7 +67,8 @@ public class ResourceCoercionComponentTest {
   @Test
   public void resourceBean() {
     CoercionTarget target = target("resourceBean");
-    Resource bean = (Resource)unresolvedCoercion.coerce(target, "some.properties");
+    Resource<Bean> bean = (Resource<Bean>)unresolvedCoercion.coerce(target, "some.properties");
+    assertThat(bean).isNotNull();
   }
 
   private CoercionTarget target(String fieldName) {

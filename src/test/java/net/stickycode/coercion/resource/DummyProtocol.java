@@ -1,14 +1,16 @@
 package net.stickycode.coercion.resource;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
-import net.stickycode.resource.ResourceConnection;
+import net.stickycode.coercion.CoercionTarget;
+import net.stickycode.resource.ResourceCodec;
+import net.stickycode.resource.ResourceInput;
 import net.stickycode.resource.ResourceLocation;
 import net.stickycode.resource.ResourceNotFoundException;
+import net.stickycode.resource.ResourceOutput;
 import net.stickycode.resource.ResourceProtocol;
 import net.stickycode.stereotype.plugin.StickyExtension;
 
@@ -22,7 +24,7 @@ public class DummyProtocol
   }
 
   static class DummyResourceConnection
-      implements ResourceConnection {
+      implements ResourceInput, ResourceOutput {
 
     ResourceLocation resourceLocation;
 
@@ -32,38 +34,36 @@ public class DummyProtocol
     }
 
     @Override
-    public InputStream getInputStream() throws ResourceNotFoundException {
+    public void close()
+        throws IOException {
+    }
+
+    @Override
+    public <T> void store(T value, CoercionTarget type, ResourceCodec<T> codec) {
+      throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public <T> T load(CoercionTarget resourceTarget, ResourceCodec<T> codec, Charset characterSet) {
       try {
-        return new ByteArrayInputStream(resourceLocation.getPath().getBytes("UTF-8"));
+        return codec.load(resourceTarget, new ByteArrayInputStream(resourceLocation.getPath().getBytes("UTF-8")), characterSet);
       }
       catch (UnsupportedEncodingException e) {
         throw new RuntimeException(e);
       }
     }
-
-    @Override
-    public OutputStream getOutputStream() {
-      throw new UnsupportedOperationException("Dummy protocol does not support writing");
-    }
-
-    @Override
-    public Charset getCharacterSet() {
-      return Charset.forName("UTF-8");
-    }
-
-    @Override
-    public ResourceLocation getLocation() {
-      return resourceLocation;
-    }
-
-    @Override
-    public void store(Object content) {
-    }
   }
 
   @Override
-  public ResourceConnection createConnection(ResourceLocation resourceLocation)
+  public ResourceInput createInput(ResourceLocation resourceLocation)
       throws ResourceNotFoundException {
     return new DummyResourceConnection(resourceLocation);
   }
+
+  @Override
+  public ResourceOutput createOutput(ResourceLocation resourceLocation)
+      throws ResourceNotFoundException {
+    return new DummyResourceConnection(resourceLocation);
+  }
+
 }

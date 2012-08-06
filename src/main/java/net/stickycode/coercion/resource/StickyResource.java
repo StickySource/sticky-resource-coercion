@@ -1,6 +1,8 @@
 package net.stickycode.coercion.resource;
 
 import java.beans.Introspector;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 import javax.inject.Inject;
 
@@ -8,7 +10,9 @@ import net.stickycode.coercion.CoercionTarget;
 import net.stickycode.configuration.ConfigurationTarget;
 import net.stickycode.configuration.ResolvedConfiguration;
 import net.stickycode.resource.ResourceCodec;
+import net.stickycode.resource.ResourceInput;
 import net.stickycode.resource.ResourceLocation;
+import net.stickycode.resource.ResourceOutput;
 import net.stickycode.resource.ResourceProtocol;
 import net.stickycode.resource.ResourceProtocolRegistry;
 import net.stickycode.stereotype.configured.Configured;
@@ -23,6 +27,9 @@ public class StickyResource<T>
 
   @Configured
   private ResourceCodec<T> codec;
+  
+  @Configured
+  private Charset characterSet = Charset.forName("UTF-8");
 
   @Inject
   private ResourceProtocolRegistry protocols;
@@ -53,11 +60,33 @@ public class StickyResource<T>
     if (uri == null)
       throw new RuntimeException();
 
-    return codec.load(protocol.createConnection(uri), uri.getResourceTarget());
+    ResourceInput input = protocol.createInput(uri);
+    try {
+      return input.load(uri.getResourceTarget(), codec, characterSet);
+    }
+    finally {
+      try {
+        input.close();
+      }
+      catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
   public void set(T value) {
-    codec.store(uri.getResourceTarget(), value, null);
+    ResourceOutput output = protocol.createOutput(uri);
+    try {
+      output.store(value, uri.getResourceTarget(), codec);
+    }
+    finally {
+      try {
+        output.close();
+      }
+      catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
   @Override
