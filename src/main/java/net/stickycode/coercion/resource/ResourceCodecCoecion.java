@@ -2,7 +2,7 @@ package net.stickycode.coercion.resource;
 
 import javax.inject.Inject;
 
-import net.stickycode.coercion.AbstractNoDefaultCoercion;
+import net.stickycode.coercion.Coercion;
 import net.stickycode.coercion.CoercionTarget;
 import net.stickycode.resource.ResourceCodec;
 import net.stickycode.resource.ResourceCodecRegistry;
@@ -10,7 +10,8 @@ import net.stickycode.stereotype.plugin.StickyExtension;
 
 @StickyExtension
 public class ResourceCodecCoecion<T>
-    extends AbstractNoDefaultCoercion<ResourceCodec<T>> {
+    implements Coercion<ResourceCodec<T>>
+{
 
   @Inject
   private ResourceCodecRegistry codecs;
@@ -33,6 +34,11 @@ public class ResourceCodecCoecion<T>
   @Override
   public ResourceCodec<T> getDefaultValue(CoercionTarget target) {
     return codecs.find(target.getComponentCoercionTypes()[0]);
+  }
+  
+  @Override
+  public String toString() {
+    return getClass().getSimpleName();
   }
 
 }

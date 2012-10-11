@@ -2,7 +2,7 @@ package net.stickycode.coercion.resource;
 
 import javax.inject.Inject;
 
-import net.stickycode.coercion.AbstractNoDefaultCoercion;
+import net.stickycode.coercion.Coercion;
 import net.stickycode.coercion.CoercionTarget;
 import net.stickycode.resource.ResourceCodecRegistry;
 import net.stickycode.resource.ResourceProtocolRegistry;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 @StickyExtension
 public class ResourceCoercion
-    extends AbstractNoDefaultCoercion<Object> {
+    implements Coercion<Object> {
 
   private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -46,4 +46,10 @@ public class ResourceCoercion
   public boolean hasDefaultValue() {
     return true;
   }
+
+  @Override
+  public String toString() {
+    return getClass().getSimpleName();
+  }
+
 }

@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 
 import javax.inject.Inject;
 
-import net.stickycode.coercion.AbstractNoDefaultCoercion;
+import net.stickycode.coercion.Coercion;
 import net.stickycode.coercion.CoercionTarget;
 import net.stickycode.resource.ResourceCodec;
 import net.stickycode.resource.ResourceCodecNotFoundException;
@@ -18,7 +18,7 @@ import net.stickycode.stereotype.plugin.StickyExtension;
 
 @StickyExtension
 public class ResolvedResourceCoercion
-    extends AbstractNoDefaultCoercion<Object> {
+    implements Coercion<Object> {
 
   @Inject
   ResourceProtocolRegistry protocols;
@@ -71,4 +71,10 @@ public class ResolvedResourceCoercion
   public boolean hasDefaultValue() {
     return true;
   }
+  
+  @Override
+  public String toString() {
+    return getClass().getSimpleName();
+  }
+
 }
